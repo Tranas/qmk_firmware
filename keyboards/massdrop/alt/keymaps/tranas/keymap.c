@@ -18,7 +18,11 @@ enum alt_keycodes {
     DBG_MTRX,           //DEBUG Toggle Matrix Prints                                //
     DBG_KBD,            //DEBUG Toggle Keyboard Prints                              //
     DBG_MOU,            //DEBUG Toggle Mouse Prints                                 //
-    MD_BOOT             //Restart into bootloader after hold timeout                //Working
+    MD_BOOT,            //Restart into bootloader after hold timeout                //Working
+    L_T_GLIT,           //LED Toggle Glitter Effect    
+    L_GLITI,            //LED Breath Speed Increase
+    L_GLITD,            //LED Breath Speed Decrease
+    L_GLITSM            //LED Glitter smooth (glitter vs clouds)
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -30,11 +34,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL, KC_LGUI, KC_LALT,                            KC_SPC,                             KC_RALT, MO(1),   KC_LEFT, KC_DOWN, KC_RGHT  \
     ),
     [1] = LAYOUT(
-        KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_SLEP, KC_MUTE, \
-        L_T_BR,  L_PSD,   L_BRI,   L_PSI,   _______, _______, _______, _______, U_T_AGCR,_______, KC_PSCR, KC_SLCK, KC_PAUS, _______, KC_END,  \
-        L_T_PTD, L_PTP,   L_BRD,   L_PTN,   _______, _______, _______, _______, _______, _______, _______, _______,          _______, KC_VOLU, \
-        _______, L_T_MD,  L_T_ONF, _______, _______, MD_BOOT, NK_TOGG, _______, KC_MPRV, KC_MNXT, KC_MPLY, _______,          KC_PGUP, KC_VOLD, \
-        _______, _______, _______,                            _______,                            _______, _______, KC_HOME, KC_PGDN, KC_END   \
+        KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,      KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_SLEP, KC_MUTE, \
+        L_T_BR,  L_PSD,   L_BRI,   L_PSI,   L_T_GLIT,   L_GLITI, _______, _______, U_T_AGCR,_______, KC_PSCR, KC_SLCK, KC_PAUS, _______, KC_END,  \
+        L_T_PTD, L_PTP,   L_BRD,   L_PTN,   L_GLITSM,   L_GLITD, _______, _______, _______, _______, _______, _______,          _______, KC_VOLU, \
+        _______, L_T_MD,  L_T_ONF, _______, _______,    MD_BOOT, NK_TOGG, _______, KC_MPRV, KC_MNXT, KC_MPLY, _______,          KC_PGUP, KC_VOLD, \
+        _______, _______, _______,                            _______,                               _______, _______, KC_HOME, KC_PGDN, KC_END   \
     ),
     /*
     [X] = LAYOUT(
@@ -163,6 +167,43 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (timer_elapsed32(key_timer) >= 500) {
                     reset_keyboard();
                 }
+            }
+            return false;
+
+        //Custom Keycodes
+        case L_T_GLIT:
+            if (record->event.pressed) {
+                led_animation_glittering = !led_animation_glittering;
+                if (led_animation_glittering) {
+                  uint8_t i;
+                  for(i = 0; i < ISSI3733_LED_COUNT; i++) {
+                    uint8_t rn = rand() % 255;
+                    led_animation_glitter_cur[i] = rn;
+                    if(i % 2) glitter_dir[i] = 1;
+                    else glitter_dir[i] = -1;
+                  }
+                }
+            }
+            return false;
+        case L_GLITI:
+            if (record->event.pressed) {
+                if(glitter_step < 16) {
+                  glitter_step++;
+                }
+            }
+            return false;
+        case L_GLITD:
+            if (record->event.pressed) {
+                if(glitter_step > 1) {
+                  glitter_step--;
+                } else {
+                  glitter_step = 1;
+                }
+            }
+            return false;
+        case L_GLITSM:
+            if (record->event.pressed) {
+              glitter_smooth = !glitter_smooth;
             }
             return false;
         default:

@@ -146,6 +146,12 @@ extern uint8_t led_enabled;
 extern uint8_t led_animation_breathe_cur;
 extern uint8_t led_animation_direction;
 extern uint8_t breathe_dir;
+extern uint8_t led_animation_glittering;
+extern int16_t led_animation_glitter_cur[];
+extern int8_t glitter_dir[];
+extern uint8_t glitter_step;
+extern uint8_t glitter_smooth;
+
 
 #    define LED_MODE_NORMAL 0  // Must be 0
 #    define LED_MODE_KEYS_ONLY 1

@@ -62,6 +62,11 @@ uint8_t gcr_actual_last;
 uint8_t gcr_breathe;
 float   breathe_mult;
 float   pomod;
+int16_t led_animation_glitter_cur[ISSI3733_LED_COUNT];
+int8_t glitter_dir[ISSI3733_LED_COUNT];
+uint8_t glitter_step;
+uint8_t glitter_smooth;
+uint8_t currentLED;
 #endif
 
 #define ACT_GCR_NONE 0
@@ -200,6 +205,7 @@ void led_set_one(int i, uint8_t r, uint8_t g, uint8_t b) {
     if (i < ISSI3733_LED_COUNT) {
 #ifdef USE_MASSDROP_CONFIGURATOR
         led_matrix_massdrop_config_override(i);
+        currentLED = i;
 #else
         led_buffer[i].r = r;
         led_buffer[i].g = g;
@@ -220,6 +226,16 @@ void init(void) {
     issi3733_prepare_arrays();
 
     led_matrix_prepare();
+
+    //setup random glitter steps to start
+    uint8_t i;
+    srand(710);
+    for(i=0; i < ISSI3733_LED_COUNT; i++) {
+        uint8_t rn = rand() % 255;
+        led_animation_glitter_cur[i] = rn;
+        if(i % 2) glitter_dir[i] = 1;
+        else glitter_dir[i] = -1;
+    }
 
     gcr_min_counter = 0;
     v_5v_cat_hit    = 0;
@@ -290,6 +306,52 @@ void flush(void) {
     i2c_led_q_run();
 }
 
+void led_run_glitter(float* ro, float* go, float* bo) {
+    double glitter_mult;
+    if (led_animation_glittering)
+    {
+        uint8_t led_id = currentLED;
+        led_animation_glitter_cur[led_id] += glitter_step * glitter_dir[led_id];
+        if(glitter_smooth) {
+            if (led_animation_glitter_cur[led_id] >= BREATHE_MAX_STEP)
+            {
+                glitter_dir[led_id] = -1;
+                led_animation_glitter_cur[led_id] = BREATHE_MAX_STEP;
+            }
+            else if (led_animation_glitter_cur[led_id] <= BREATHE_MIN_STEP)
+            {
+                glitter_dir[led_id] = 1;
+                led_animation_glitter_cur[led_id] = BREATHE_MIN_STEP;
+            }
+        }
+        else {
+            if (led_animation_glitter_cur[led_id] >= BREATHE_MAX_STEP)
+            {
+                uint8_t randy = rand() % 255;
+                randy -= 1;
+                if (randy > 127)  glitter_dir[led_id] = -1;
+                else led_animation_glitter_cur[led_id] = BREATHE_MIN_STEP;
+            }
+            else if (led_animation_glitter_cur[led_id] <= BREATHE_MIN_STEP)
+            {
+                uint8_t randy = rand() % 255;
+                randy -= 1;
+                if (randy > 127) glitter_dir[led_id] = 1;
+                else led_animation_glitter_cur[led_id] = BREATHE_MAX_STEP;
+            }
+        }
+        //Brightness curve created for 256 steps, 0 - ~98%
+        glitter_mult = 0.000015 * led_animation_glitter_cur[led_id] * led_animation_glitter_cur[led_id];
+        glitter_mult += 0.024625;              //add a small amount to get max to 1.0
+        if (glitter_mult > 1.0) glitter_mult = 1.0;
+        else if (glitter_mult < 0.0) glitter_mult = 0.0;
+
+        *ro *= glitter_mult;
+        *go *= glitter_mult;
+        *bo *= glitter_mult;
+    }
+}
+
 void led_matrix_indicators(void) {
     uint8_t kbled = keyboard_leds();
     if (kbled && rgb_matrix_config.enable) {
@@ -340,6 +402,22 @@ uint8_t led_lighting_mode         = LED_MODE_NORMAL;
 uint8_t led_enabled               = 1;
 uint8_t led_animation_breathe_cur = BREATHE_MIN_STEP;
 uint8_t breathe_dir               = 1;
+uint8_t led_animation_glittering  = 1;   //turn glitter on by default
+uint8_t glitter_smooth            = 1;   //glitter vibes = 0 and cloud vibes = 1
+uint8_t glitter_step              = 2;
+
+/*setup random glitter steps to start
+static void glitter_setup(void)
+{
+    uint8_t i;
+    srand(710);
+    for(i=0; i < ISSI3733_LED_COUNT; i++) {
+        uint8_t rn = rand() % 255;
+        led_animation_glitter_cur[i] = rn;
+        if(i % 2) glitter_dir[i] = 1;
+        else glitter_dir[i] = -1;
+    }
+} */
 
 static void led_run_pattern(led_setup_t* f, float* ro, float* go, float* bo, float pos) {
     float po;
@@ -438,6 +516,7 @@ static void led_matrix_massdrop_config_override(int i) {
                 led_run_pattern(led_setups[led_cur_instruction->pattern_id], &ro, &go, &bo, po);
             } else if (led_cur_instruction->flags & LED_FLAG_USE_ROTATE_PATTERN) {
                 led_run_pattern(led_setups[led_animation_id], &ro, &go, &bo, po);
+                led_run_glitter(&ro, &go, &bo);
             }
 
         next_iter:
