@@ -80,19 +80,122 @@ led_setup_t leds_black_with_red_stripe[] = {
 
 // Rainbow no scrolling
 led_setup_t leds_rainbow_ns[] = {
-    {.hs = 0, .he = 16.67, .rs = 255, .re = 255, .gs = 0, .ge = 255, .bs = 0, .be = 0, .ef = EF_OVER}, {.hs = 16.67, .he = 33.33, .rs = 255, .re = 0, .gs = 255, .ge = 255, .bs = 0, .be = 0, .ef = EF_OVER}, {.hs = 33.33, .he = 50, .rs = 0, .re = 0, .gs = 255, .ge = 255, .bs = 0, .be = 255, .ef = EF_OVER}, {.hs = 50, .he = 66.67, .rs = 0, .re = 0, .gs = 255, .ge = 0, .bs = 255, .be = 255, .ef = EF_OVER}, {.hs = 66.67, .he = 83.33, .rs = 0, .re = 255, .gs = 0, .ge = 0, .bs = 255, .be = 255, .ef = EF_OVER}, {.hs = 83.33, .he = 100, .rs = 255, .re = 255, .gs = 0, .ge = 0, .bs = 255, .be = 0, .ef = EF_OVER}, {.end = 1},
+    {.hs = 0, .he = 16.67, .rs = 255, .re = 255, .gs = 0, .ge = 255, .bs = 0, .be = 0, .ef = EF_OVER}, 
+    {.hs = 16.67, .he = 33.33, .rs = 255, .re = 0, .gs = 255, .ge = 255, .bs = 0, .be = 0, .ef = EF_OVER}, 
+    {.hs = 33.33, .he = 50, .rs = 0, .re = 0, .gs = 255, .ge = 255, .bs = 0, .be = 255, .ef = EF_OVER}, 
+    {.hs = 50, .he = 66.67, .rs = 0, .re = 0, .gs = 255, .ge = 0, .bs = 255, .be = 255, .ef = EF_OVER}, 
+    {.hs = 66.67, .he = 83.33, .rs = 0, .re = 255, .gs = 0, .ge = 0, .bs = 255, .be = 255, .ef = EF_OVER}, 
+    {.hs = 83.33, .he = 100, .rs = 255, .re = 255, .gs = 0, .ge = 0, .bs = 255, .be = 0, .ef = EF_OVER}, 
+    {.end = 1},
 };
 
 // Rainbow scrolling
 led_setup_t leds_rainbow_s[] = {
-    {.hs = 0, .he = 16.67, .rs = 255, .re = 255, .gs = 0, .ge = 255, .bs = 0, .be = 0, .ef = EF_OVER | EF_SCR_R}, {.hs = 16.67, .he = 33.33, .rs = 255, .re = 0, .gs = 255, .ge = 255, .bs = 0, .be = 0, .ef = EF_OVER | EF_SCR_R}, {.hs = 33.33, .he = 50, .rs = 0, .re = 0, .gs = 255, .ge = 255, .bs = 0, .be = 255, .ef = EF_OVER | EF_SCR_R}, {.hs = 50, .he = 66.67, .rs = 0, .re = 0, .gs = 255, .ge = 0, .bs = 255, .be = 255, .ef = EF_OVER | EF_SCR_R}, {.hs = 66.67, .he = 83.33, .rs = 0, .re = 255, .gs = 0, .ge = 0, .bs = 255, .be = 255, .ef = EF_OVER | EF_SCR_R}, {.hs = 83.33, .he = 100, .rs = 255, .re = 255, .gs = 0, .ge = 0, .bs = 255, .be = 0, .ef = EF_OVER | EF_SCR_R}, {.end = 1},
+    {.hs = 0, .he = 16.67, .rs = 255, .re = 255, .gs = 0, .ge = 255, .bs = 0, .be = 0, .ef = EF_OVER | EF_SCR_R}, 
+    {.hs = 16.67, .he = 33.33, .rs = 255, .re = 0, .gs = 255, .ge = 255, .bs = 0, .be = 0, .ef = EF_OVER | EF_SCR_R}, 
+    {.hs = 33.33, .he = 50, .rs = 0, .re = 0, .gs = 255, .ge = 255, .bs = 0, .be = 255, .ef = EF_OVER | EF_SCR_R}, 
+    {.hs = 50, .he = 66.67, .rs = 0, .re = 0, .gs = 255, .ge = 0, .bs = 255, .be = 255, .ef = EF_OVER | EF_SCR_R}, 
+    {.hs = 66.67, .he = 83.33, .rs = 0, .re = 255, .gs = 0, .ge = 0, .bs = 255, .be = 255, .ef = EF_OVER | EF_SCR_R}, 
+    {.hs = 83.33, .he = 100, .rs = 255, .re = 255, .gs = 0, .ge = 0, .bs = 255, .be = 0, .ef = EF_OVER | EF_SCR_R}, 
+    {.end = 1},
+};
+
+// Valhalla Theme Stripe Animation
+led_setup_t leds_valhalla_stripe[] = {
+    {.hs = 0, .he = 100, .rs = 0, .re = 0, .gs = 231, .ge = 231, .bs = 141, .be = 141, .ef = EF_NONE},
+    {.hs = 0, .he = 33.33, .rs = 0, .re = 231, .gs = 0, .ge = 231, .bs = 0, .be = 51, .ef = EF_SCR_R | EF_SUBTRACT},
+    {.hs = 33.33, .he = 66.67, .rs = 231, .re = 0, .gs = 231, .ge = 0, .bs = 51, .be = 0, .ef = EF_SCR_R | EF_SUBTRACT},
+    {.end = 1},
+};
+
+// Vaporwave Stripe Animation [teal-pink]}
+led_setup_t leds_vaporwave_stripe[] = {
+    {.hs = 0, .he = 100, .rs = 0, .re = 0, .gs = 231, .ge = 231, .bs = 141, .be = 141, .ef = EF_NONE},
+    {.hs = 0, .he = 33.33, .rs = 0, .re = 231, .gs = 231, .ge = 0, .bs = 141, .be = 90, .ef = EF_SCR_R | EF_SUBTRACT},
+    {.hs = 33.33, .he = 66.67, .rs = 231, .re = 0, .gs = 0, .ge = 231, .bs = 90, .be = 141, .ef = EF_SCR_R | EF_SUBTRACT},
+    {.end = 1},
+};
+
+// Vaporwave Stripe Animation [teal-purple]}
+led_setup_t leds_vaporwave_stripe_purple[] = {
+    {.hs = 0, .he = 100, .rs = 0, .re = 0, .gs = 231, .ge = 231, .bs = 141, .be = 141, .ef = EF_NONE},
+    {.hs = 0, .he = 33.33, .rs = 0, .re = 141, .gs = 231, .ge = 0, .bs = 141, .be = 231, .ef = EF_SCR_R | EF_SUBTRACT},
+    {.hs = 33.33, .he = 66.67, .rs = 141, .re = 0, .gs = 0, .ge = 231, .bs = 231, .be = 141, .ef = EF_SCR_R | EF_SUBTRACT},
+    {.end = 1},
+};
+
+
+led_setup_t leds_valentine_stripe[] = {
+    {.hs = 0, .he = 100, .rs = 231, .re = 231, .gs = 0, .ge = 0, .bs = 90, .be = 90, .ef = EF_NONE},
+    {.hs = 0, .he = 33.33, .rs = 0, .re = 231, .gs = 231, .ge = 0, .bs = 141, .be = 90, .ef = EF_SCR_R | EF_SUBTRACT},
+    {.hs = 33.33, .he = 66.67, .rs = 231, .re = 0, .gs = 0, .ge = 231, .bs = 90, .be = 141, .ef = EF_SCR_R | EF_SUBTRACT},
+    {.end = 1},
+};
+
+led_setup_t leds_tetradic_teal[] = {
+    {.hs = 0, .he = 25, .rs = 90, .re = 90, .gs = 231, .ge = 231, .bs = 0, .be = 0, .ef = EF_OVER | EF_SCR_R},
+    {.hs = 25, .he = 50, .rs = 0, .re = 0, .gs = 231, .ge = 231, .bs = 141, .be = 141, .ef = EF_OVER | EF_SCR_R},
+    {.hs = 50, .he = 75, .rs = 141, .re = 141, .gs = 0, .ge = 0, .bs = 231, .be = 231, .ef = EF_OVER | EF_SCR_R},
+    {.hs = 75, .he = 100, .rs = 231, .re = 231, .gs = 0, .ge = 0, .bs = 90, .be = 90, .ef = EF_OVER | EF_SCR_R},
+    {.end = 1},
+};
+
+led_setup_t leds_tetradic_teal_gradient[] = {
+    {.hs = 0, .he = 25, .rs = 90, .re = 0, .gs = 231, .ge = 231, .bs = 0, .be = 141, .ef = EF_OVER | EF_SCR_R},
+    {.hs = 25, .he = 50, .rs = 0, .re = 141, .gs = 231, .ge = 0, .bs = 141, .be = 231, .ef = EF_OVER | EF_SCR_R},
+    {.hs = 50, .he = 75, .rs = 141, .re = 231, .gs = 0, .ge = 0, .bs = 231, .be = 90, .ef = EF_OVER | EF_SCR_R},
+    {.hs = 75, .he = 100, .rs = 231, .re = 90, .gs = 0, .ge = 231, .bs = 90, .be = 0, .ef = EF_OVER | EF_SCR_R},
+    {.end = 1},
+};
+
+
+led_setup_t leds_analogous_teal[] = {
+    {.hs = 0, .he = 33.33, .rs = 0, .re = 0, .gs = 231, .ge = 231, .bs = 26, .be = 141, .ef = EF_OVER | EF_SCR_R},
+    {.hs = 33.33, .he = 66.67, .rs = 0, .re = 0, .gs = 231, .ge = 206, .bs = 141, .be = 231, .ef = EF_OVER | EF_SCR_R},
+    {.hs = 66.67, .he = 100, .rs = 0, .re = 0, .gs = 206, .ge = 231, .bs = 231, .be = 26, .ef = EF_OVER | EF_SCR_R},
+    {.end = 1},
+};
+
+// Black with moving red stripe
+led_setup_t leds_black_with_teal_stripe[] = {
+    {.hs = 0, .he = 15, .rs = 0, .re = 0, .gs = 0, .ge = 231, .bs = 0, .be = 141, .ef = EF_SCR_R},
+    {.hs = 15, .he = 30, .rs = 0, .re = 0, .gs = 231, .ge = 0, .bs = 141, .be = 0, .ef = EF_SCR_R},
+    {.end = 1},
+};
+
+// Black with moving red stripe
+led_setup_t leds_black_with_purple_stripe[] = {
+    {.hs = 0, .he = 15, .rs = 0, .re = 141, .gs = 0, .ge = 0, .bs = 0, .be = 231, .ef = EF_SCR_R},
+    {.hs = 15, .he = 30, .rs = 141, .re = 0, .gs = 0, .ge = 0, .bs = 231, .be = 0, .ef = EF_SCR_R},
+    {.end = 1},
 };
 
 // Add new LED animations here using one from above as example
 // The last entry must be { .end = 1 }
 // Add the new animation name to the list below following its format
 
-void *led_setups[] = {leds_rainbow_s, leds_rainbow_ns, leds_teal_salmon, leds_yellow, leds_red, leds_green, leds_blue, leds_white, leds_white_with_red_stripe, leds_black_with_red_stripe, leds_off};
+void *led_setups[] = {
+    // leds_off,
+    leds_valhalla_stripe, 
+    leds_vaporwave_stripe,
+    leds_vaporwave_stripe_purple,
+    leds_valentine_stripe,
+    leds_tetradic_teal,
+    leds_tetradic_teal_gradient,
+    leds_analogous_teal,
+    leds_rainbow_s,
+    leds_rainbow_ns,
+    // leds_teal_salmon, 
+    // leds_yellow, 
+    // leds_red, 
+    // leds_green, 
+    // leds_blue, 
+    // leds_white, 
+    // leds_white_with_red_stripe, 
+    leds_black_with_red_stripe,
+    leds_black_with_teal_stripe,
+    leds_black_with_purple_stripe
+    };
 
 const uint8_t led_setups_count = sizeof(led_setups) / sizeof(led_setups[0]);
 
