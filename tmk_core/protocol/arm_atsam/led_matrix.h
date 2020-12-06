@@ -92,6 +92,20 @@ void led_matrix_indicators(void);
 
 #ifdef USE_MASSDROP_CONFIGURATOR
 
+#define LED_SCROLL_HORIZ            0
+#define LED_SCROLL_VERT             1
+#define LED_SCROLL_DIAG             2
+#define LED_SCROLL_DIAG2            3
+#define LED_SCROLL_DIAG3            4
+#define LED_SCROLL_CIRC             5
+#define LED_SCROLL_CENT2            6
+#define LED_SCROLL_SPLIT            7
+#define LED_SCROLL_SPLIT2           8
+#define LED_SCROLL_CENT             9
+#define LED_SCROLL_FUNK1            10
+#define LED_SCROLL_FUNK2            11
+#define LED_SCROLL_MAX_INDEX        8
+
 #    define EF_NONE 0x00000000      // No effect
 #    define EF_OVER 0x00000001      // Overwrite any previous color information with new
 #    define EF_SCR_L 0x00000002     // Scroll left
@@ -145,6 +159,7 @@ extern uint8_t led_lighting_mode;
 extern uint8_t led_enabled;
 extern uint8_t led_animation_breathe_cur;
 extern uint8_t led_animation_direction;
+extern uint8_t led_animation_orientation;
 extern uint8_t breathe_dir;
 extern uint8_t led_animation_glittering;
 extern int16_t led_animation_glitter_cur[];

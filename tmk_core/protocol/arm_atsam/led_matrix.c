@@ -405,6 +405,13 @@ uint8_t breathe_dir               = 1;
 uint8_t led_animation_glittering  = 1;   //turn glitter on by default
 uint8_t glitter_smooth            = 1;   //glitter vibes = 0 and cloud vibes = 1
 uint8_t glitter_step              = 2;
+float disp_width = 224.f;
+float disp_height = 64.f;
+float disp_left = 0.f;
+float disp_right = 224.f;
+float disp_bottom = 0.f;
+//    float disp_top = 64.f;
+float hundredpcent = 100.0;
 
 /*setup random glitter steps to start
 static void glitter_setup(void)
@@ -479,8 +486,61 @@ static void led_matrix_massdrop_config_override(int i) {
     float ro = 0;
     float go = 0;
     float bo = 0;
+    float po;
 
-    float po = (led_animation_orientation) ? (float)g_led_config.point[i].y / 64.f * 100 : (float)g_led_config.point[i].x / 224.f * 100;
+    float ix = g_led_config.point[i].x;
+    float iy = g_led_config.point[i].y;
+    float px = g_led_config.point[i].x / disp_width * 100;
+    float py = g_led_config.point[i].y / disp_height * 100;
+
+
+//    float po = (led_animation_orientation) ? py : px;
+    switch(led_animation_orientation) {
+        case LED_SCROLL_HORIZ:
+            po = px;
+            break;
+        case LED_SCROLL_VERT:
+            po = py;
+            break;
+        case LED_SCROLL_DIAG:
+        //    led_animation_direction = 0;
+            po = (py + px) / 2;
+            break;
+        case LED_SCROLL_DIAG2:
+        //    led_animation_direction = 0;
+            po = (py / 4) + px;  //cool diagnal
+            break;
+        case LED_SCROLL_DIAG3:
+        //    led_animation_direction = 0;
+            po = fabsf(((hundredpcent - py) / 4) + px);  //cool opposite diagnal
+            break;
+        case LED_SCROLL_CIRC:
+            po = sqrtf((powf(fabsf((disp_width / 2) - (ix - disp_left)), 2) + powf(fabsf((disp_height / 2) - (iy - disp_bottom)), 2))) / sqrtf(powf(disp_width, 2) + powf(disp_height, 2)) * 100;
+            break;
+        case LED_SCROLL_CENT2:
+            po = (px >= 50) ? fabsf(((py) / 4) + (hundredpcent - px))  : (py / 4) + px;   //this one does have of keyboard
+            break;
+        case LED_SCROLL_SPLIT:
+//            led_animation_direction = 0;
+            po = (disp_right - ix >= 7.294) ? fabsf(((hundredpcent - py) / 4) + (hundredpcent - px )) : fabsf((py / 4) + (px));   //split diagnal shifted left
+            break;
+        case LED_SCROLL_SPLIT2:
+            po = (disp_right - ix >= 7.594) ? fabsf(((hundredpcent - py) / 4) + px) : fabsf((py / 4) + (hundredpcent - px));   //cool no glitching either direction
+            break;
+/*      case LED_SCROLL_CENT: //broken??
+            po = (disp_right - ix >= 7.594) ? ((py / 6) + ((disp_right - (ix - disp_left)) * 3)) : (py / 6) + (ix * 3);  //7.594 is middle of spacebar led
+            break; 
+        case LED_SCROLL_FUNK1:
+            led_animation_direction = 0;
+            po = (disp_right - ix >= 7.594) ? fabsf(((hundredpcent - py) / 4) + px) : fabsf((py / 4) + px);   //roll over diag in middle
+            break;
+        case LED_SCROLL_FUNK2:
+            led_animation_direction = 0;
+            po = (disp_right - ix >= 7.594) ? fabsf(((hundredpcent - py) / 4) + (hundredpcent - px)) : fabsf((py / 4) + (hundredpcent - px));
+            break; */
+        default:
+            po = px;
+    }
 
     uint8_t highest_active_layer = biton32(layer_state);
 
@@ -514,6 +574,7 @@ static void led_matrix_massdrop_config_override(int i) {
                 bo = led_cur_instruction->b;
             } else if (led_cur_instruction->flags & LED_FLAG_USE_PATTERN) {
                 led_run_pattern(led_setups[led_cur_instruction->pattern_id], &ro, &go, &bo, po);
+                led_run_glitter(&ro, &go, &bo);
             } else if (led_cur_instruction->flags & LED_FLAG_USE_ROTATE_PATTERN) {
                 led_run_pattern(led_setups[led_animation_id], &ro, &go, &bo, po);
                 led_run_glitter(&ro, &go, &bo);

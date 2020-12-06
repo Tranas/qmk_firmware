@@ -22,7 +22,8 @@ enum alt_keycodes {
     L_T_GLIT,           //LED Toggle Glitter Effect    
     L_GLITI,            //LED Breath Speed Increase
     L_GLITD,            //LED Breath Speed Decrease
-    L_GLITSM            //LED Glitter smooth (glitter vs clouds)
+    L_GLITSM,           //LED Glitter smooth (glitter vs clouds)
+    L_SCR_D             //LED Scroll Next
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -35,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [1] = LAYOUT(
         KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,      KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_SLEP, KC_MUTE, \
-        L_T_BR,  L_PSD,   L_BRI,   L_PSI,   L_T_GLIT,   L_GLITI, _______, _______, U_T_AGCR,_______, KC_PSCR, KC_SLCK, KC_PAUS, _______, KC_END,  \
+        L_SCR_D, L_PSD,   L_BRI,   L_PSI,   L_T_GLIT,   L_GLITI, L_T_BR,  _______, U_T_AGCR,_______, KC_PSCR, KC_SLCK, KC_PAUS, _______, KC_END,  \
         L_T_PTD, L_PTP,   L_BRD,   L_PTN,   L_GLITSM,   L_GLITD, _______, _______, _______, _______, _______, _______,          _______, KC_VOLU, \
         _______, L_T_MD,  L_T_ONF, _______, _______,    MD_BOOT, NK_TOGG, _______, KC_MPRV, KC_MNXT, KC_MPLY, _______,          KC_PGUP, KC_VOLD, \
         _______, _______, _______,                            _______,                               _______, _______, KC_HOME, KC_PGDN, KC_END   \
@@ -206,6 +207,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               glitter_smooth = !glitter_smooth;
             }
             return false;
+        case L_SCR_D:
+            if (record->event.pressed) {
+                led_animation_orientation++;
+                if (led_animation_orientation > LED_SCROLL_MAX_INDEX) led_animation_orientation = LED_SCROLL_HORIZ;
+            }return false;
         default:
             return true; //Process all other keycodes normally
     }
